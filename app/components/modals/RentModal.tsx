@@ -63,13 +63,13 @@ const RentModal = () => {
   const bathroomCount = watch("bathroomCount");
   const imageSrc = watch("imageSrc");
 
-  // const Map = useMemo(
-  //   () =>
-  //     dynamic(() => import("../Map"), {
-  //       ssr: false,
-  //     }),
-  //   [location]
-  // );
+  const Map = useMemo(
+    () =>
+      dynamic(() => import("../Map"), {
+        ssr: false,
+      }),
+    [location]
+  );
 
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -157,21 +157,21 @@ const RentModal = () => {
     </div>
   );
 
-  // if (step === STEPS.LOCATION) {
-  //   bodyContent = (
-  //     <div className="flex flex-col gap-8">
-  //       <Heading
-  //         title="Where is your place located?"
-  //         subtitle="Help guests find you!"
-  //       />
-  //       <CountrySelect
-  //         value={location}
-  //         onChange={(value) => setCustomValue("location", value)}
-  //       />
-  //       <Map center={location?.latlng} />
-  //     </div>
-  //   );
-  // }
+  if (step === STEPS.LOCATION) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Where is your place located?"
+          subtitle="Help guests find you!"
+        />
+        <CountrySelect
+          value={location}
+          onChange={(value) => setCustomValue("location", value)}
+        />
+        <Map center={location?.latlng} />
+      </div>
+    );
+  }
 
   // if (step === STEPS.INFO) {
   //   bodyContent = (
@@ -274,7 +274,7 @@ const RentModal = () => {
       isOpen={rentModal.isOpen}
       title="Airbnb your home!"
       actionLabel={actionLabel}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={onNext}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
       onClose={rentModal.onClose}
