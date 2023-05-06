@@ -68,6 +68,7 @@ const RentModal = () => {
       dynamic(() => import("../Map"), {
         ssr: false,
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [location]
   );
 
@@ -219,54 +220,54 @@ const RentModal = () => {
     );
   }
 
-  // if (step === STEPS.DESCRIPTION) {
-  //   bodyContent = (
-  //     <div className="flex flex-col gap-8">
-  //       <Heading
-  //         title="How would you describe your place?"
-  //         subtitle="Short and sweet works best!"
-  //       />
-  //       <Input
-  //         id="title"
-  //         label="Title"
-  //         disabled={isLoading}
-  //         register={register}
-  //         errors={errors}
-  //         required
-  //       />
-  //       <hr />
-  //       <Input
-  //         id="description"
-  //         label="Description"
-  //         disabled={isLoading}
-  //         register={register}
-  //         errors={errors}
-  //         required
-  //       />
-  //     </div>
-  //   );
-  // }
+  if (step === STEPS.DESCRIPTION) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="How would you describe your place?"
+          subtitle="Short and sweet works best!"
+        />
+        <Input
+          id="title"
+          label="Title"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+        />
+        <hr />
+        <Input
+          id="description"
+          label="Description"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+        />
+      </div>
+    );
+  }
 
-  // if (step === STEPS.PRICE) {
-  //   bodyContent = (
-  //     <div className="flex flex-col gap-8">
-  //       <Heading
-  //         title="Now, set your price"
-  //         subtitle="How much do you charge per night?"
-  //       />
-  //       <Input
-  //         id="price"
-  //         label="Price"
-  //         formatPrice
-  //         type="number"
-  //         disabled={isLoading}
-  //         register={register}
-  //         errors={errors}
-  //         required
-  //       />
-  //     </div>
-  //   );
-  // }
+  if (step === STEPS.PRICE) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Now, set your price"
+          subtitle="How much do you charge per night?"
+        />
+        <Input
+          id="price"
+          label="Price"
+          formatPrice
+          type="number"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+        />
+      </div>
+    );
+  }
 
   return (
     <Modal
@@ -274,7 +275,7 @@ const RentModal = () => {
       isOpen={rentModal.isOpen}
       title="Airbnb your home!"
       actionLabel={actionLabel}
-      onSubmit={onNext}
+      onSubmit={handleSubmit(onSubmit)}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
       onClose={rentModal.onClose}
