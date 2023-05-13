@@ -19,6 +19,9 @@ export default async function getCurrentUser() {
       where: {
         email: session.user.email as string,
       },
+      include: {
+        favorite: true,
+      },
     });
 
     if (!currentUser) {
@@ -30,6 +33,7 @@ export default async function getCurrentUser() {
       createdAt: currentUser.createdAt.toISOString(),
       updatedAt: currentUser.updatedAt.toISOString(),
       emailVerified: currentUser.emailVerified?.toISOString() || null,
+      favoriteIds: currentUser.favorite || null,
     };
   } catch (error: any) {
     return null;

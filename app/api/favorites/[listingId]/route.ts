@@ -7,10 +7,7 @@ interface IParams {
   listingId?: string;
 }
 
-export async function POST(
-  request: Request, 
-  { params }: { params: IParams }
-) {
+export async function POST(request: Request, { params }: { params: IParams }) {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
@@ -19,28 +16,33 @@ export async function POST(
 
   const { listingId } = params;
 
-  if (!listingId || typeof listingId !== 'string') {
-    throw new Error('Invalid ID');
+  if (!listingId || typeof listingId !== "string") {
+    throw new Error("Invalid ID");
   }
 
-  let favoriteIds = [...(currentUser.favoriteIds || [])];
-
-  favoriteIds.push(listingId);
-
-  const user = await prisma.user.update({
+  const favoriteIds = await prisma.favorite.findMany({
     where: {
-      id: currentUser.id
+      userId: currentUser.id,
+      listingId: listingId,
     },
-    data: {
-      favoriteIds
-    }
   });
 
-  return NextResponse.json(user);
+  if (favoriteIds.length > 0) {
+    return NextResponse.json(favoriteIds);
+  }
+
+  const createFavorite = await prisma.favorite.create({
+    data: {
+      userId: currentUser.id,
+      listingId: listingId,
+    },
+  });
+
+  return NextResponse.json(createFavorite);
 }
 
 export async function DELETE(
-  request: Request, 
+  request: Request,
   { params }: { params: IParams }
 ) {
   const currentUser = await getCurrentUser();
@@ -51,22 +53,26 @@ export async function DELETE(
 
   const { listingId } = params;
 
-  if (!listingId || typeof listingId !== 'string') {
-    throw new Error('Invalid ID');
+  if (!listingId || typeof listingId !== "string") {
+    throw new Error("Invalid ID");
   }
 
-  let favoriteIds = [...(currentUser.favoriteIds || [])];
-
-  favoriteIds = favoriteIds.filter((id) => id !== listingId);
-
-  const user = await prisma.user.update({
+  const favoriteIds = await prisma.favorite.findMany({
     where: {
-      id: currentUser.id
+      userId: currentUser.id,
+      listingId: listingId,
     },
-    data: {
-      favoriteIds
-    }
   });
 
-  return NextResponse.json(user);
+  if (favoriteIds.length == 0) {
+    return NextResponse.json(favoriteIds);
+  }
+
+  const deleteFavoriteIds = await prisma.favorite.delete({
+    where: {
+      id: favoriteIds[0].id,
+    },
+  });
+
+  return NextResponse.json(deleteFavoriteIds);
 }
