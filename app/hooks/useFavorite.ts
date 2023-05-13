@@ -20,13 +20,13 @@ const useFavorite = ({ listingId, currentUser }: IUseFavorite) => {
 
   const hasFavorited = useMemo(() => {
     const list = currentUser?.favoriteIds || [];
-    const hasFavorited = list.map((favorite) => {
+    const thereIsFavorite = list.map((favorite) => {
       if (favorite.listingId === listingId) {
         return true;
       }
     });
 
-    return hasFavorited;
+    return thereIsFavorite;
   }, [currentUser, listingId]);
 
   const toggleFavorite = useCallback(
@@ -40,13 +40,14 @@ const useFavorite = ({ listingId, currentUser }: IUseFavorite) => {
       try {
         let request;
 
-        if (hasFavorited) {
+        if (hasFavorited.length > 0) {
           request = () => axios.delete(`/api/favorites/${listingId}`);
         } else {
           request = () => axios.post(`/api/favorites/${listingId}`);
         }
 
         await request();
+
         router.refresh();
         toast.success("Success");
       } catch (error) {
