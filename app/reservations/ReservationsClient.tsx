@@ -59,6 +59,7 @@ const ReservationsClient = ({
         "
       >
         {reservations.map((reservation) => (
+          // TODO: Show the customer in the card.
           <ListingCard
             key={reservation.id}
             data={reservation.listing}
