@@ -1,84 +1,83 @@
-"use client";
+'use client'
 
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
-import { format } from "date-fns";
+import React, { useCallback, useMemo } from 'react'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { format } from 'date-fns'
 
-import useCountries from "@/app/hooks/useCountries";
-import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
+import useCountries from '@/app/hooks/useCountries'
+import { SafeListing, SafeReservation, SafeUser } from '@/app/types'
 
-import HeartButton from "../HeartButton";
-import Button from "../Button";
-import ClientOnly from "../ClientOnly";
+import HeartButton from '../HeartButton'
+import Button from '../Button'
 
 interface ListingCardProps {
-  data: SafeListing;
-  reservation?: SafeReservation;
-  onAction?: (id: string) => void;
-  disabled?: boolean;
-  actionLabel?: string;
-  actionId?: string;
-  currentUser?: SafeUser | null;
+  data: SafeListing
+  reservation?: SafeReservation
+  onAction?: (id: string) => void
+  disabled?: boolean
+  actionLabel?: string
+  actionId?: string
+  currentUser?: SafeUser | null
 }
 
-const ListingCard: React.FC<ListingCardProps> = ({
+const ListingCard = ({
   data,
   reservation,
   onAction,
   disabled,
   actionLabel,
-  actionId = "",
+  actionId = '',
   currentUser,
-}) => {
-  const router = useRouter();
-  const { getByValue } = useCountries();
+}: ListingCardProps) => {
+  const router = useRouter()
+  const { getByValue } = useCountries()
 
-  const location = getByValue(data.locationValue);
+  const location = getByValue(data.locationValue)
 
   const handleCancel = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.stopPropagation();
+      e.stopPropagation()
 
       if (disabled) {
-        return;
+        return
       }
 
-      onAction?.(actionId);
+      onAction?.(actionId)
     },
-    [disabled, onAction, actionId]
-  );
+    [disabled, onAction, actionId],
+  )
 
   const price = useMemo(() => {
     if (reservation) {
-      return reservation.totalPrice;
+      return reservation.totalPrice
     }
 
-    return data.price;
-  }, [reservation, data.price]);
+    return data.price
+  }, [reservation, data.price])
 
   const reservationDate = useMemo(() => {
     if (!reservation) {
-      return null;
+      return null
     }
 
-    const start = new Date(reservation.startDate);
-    const end = new Date(reservation.endDate);
+    const start = new Date(reservation.startDate)
+    const end = new Date(reservation.endDate)
 
-    return `${format(start, "PP")} - ${format(end, "PP")}`;
-  }, [reservation]);
+    return `${format(start, 'PP')} - ${format(end, 'PP')}`
+  }, [reservation])
 
   return (
     <div
       onClick={() => router.push(`/listings/${data.id}`)}
-      className="col-span-1 cursor-pointer group"
+      className="group col-span-1 cursor-pointer"
     >
-      <div className="flex flex-col gap-2 w-full">
+      <div className="flex w-full flex-col gap-2">
         <div
           className="
+            relative 
             aspect-square 
             w-full 
-            relative 
             overflow-hidden 
             rounded-xl
           "
@@ -86,11 +85,11 @@ const ListingCard: React.FC<ListingCardProps> = ({
           <Image
             fill
             className="
-              object-cover 
               h-full 
               w-full 
-              group-hover:scale-110 
-              transition
+              object-cover 
+              transition 
+              group-hover:scale-110
             "
             src={data.imageSrc}
             alt="Listing"
@@ -98,14 +97,14 @@ const ListingCard: React.FC<ListingCardProps> = ({
           <div
             className="
             absolute
-            top-3
             right-3
+            top-3
           "
           >
             <HeartButton listingId={data.id} currentUser={currentUser} />
           </div>
         </div>
-        <div className="font-semibold text-lg">
+        <div className="text-lg font-semibold">
           {location?.region}, {location?.label}
         </div>
         <div className="font-light text-neutral-500">
@@ -125,7 +124,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ListingCard;
+export default ListingCard
