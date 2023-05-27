@@ -1,14 +1,14 @@
-import prisma from "@/app/libs/prismadb";
+import prisma from '@/app/libs/prismadb'
 
 export interface IListingsParams {
-  userId?: string;
-  guestCount?: number;
-  roomCount?: number;
-  bathroomCount?: number;
-  startDate?: string;
-  endDate?: string;
-  locationValue?: string;
-  category?: string;
+  userId?: string
+  guestCount?: number
+  roomCount?: number
+  bathroomCount?: number
+  startDate?: string
+  endDate?: string
+  locationValue?: string
+  category?: string
 }
 
 export default async function getListings(params: IListingsParams) {
@@ -22,38 +22,38 @@ export default async function getListings(params: IListingsParams) {
       startDate,
       endDate,
       category,
-    } = params;
+    } = params
 
-    let query: any = {};
+    const query: any = {}
 
     if (userId) {
-      query.userId = userId;
+      query.userId = userId
     }
 
     if (category) {
-      query.category = category;
+      query.category = category
     }
 
     if (roomCount) {
       query.roomCount = {
         gte: +roomCount,
-      };
+      }
     }
 
     if (guestCount) {
       query.guestCount = {
         gte: +guestCount,
-      };
+      }
     }
 
     if (bathroomCount) {
       query.bathroomCount = {
         gte: +bathroomCount,
-      };
+      }
     }
 
     if (locationValue) {
-      query.locationValue = locationValue;
+      query.locationValue = locationValue
     }
 
     if (startDate && endDate) {
@@ -72,23 +72,23 @@ export default async function getListings(params: IListingsParams) {
             ],
           },
         },
-      };
+      }
     }
 
     const listings = await prisma.listing.findMany({
       where: query,
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
-    });
+    })
 
     const safeListings = listings.map((listing) => ({
       ...listing,
       createdAt: listing.createdAt.toISOString(),
-    }));
+    }))
 
-    return safeListings;
+    return safeListings
   } catch (error: any) {
-    throw new Error(error);
+    throw new Error(error)
   }
 }
