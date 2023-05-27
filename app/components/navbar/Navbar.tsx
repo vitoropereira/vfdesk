@@ -1,22 +1,22 @@
-import { SafeUser } from "@/app/types";
+import { SafeUser } from '@/app/types'
 
-import Container from "../Container";
-import Logo from "./Logo";
-import Search from "./Search";
-import UserMenu from "./UserMenu";
-import Categories from "./Categories";
+import Container from '../Container'
+import Logo from './Logo'
+import Search from './Search'
+import UserMenu from './UserMenu'
+import Categories from './Categories'
 
 interface NavbarProps {
-  currentUser?: SafeUser | null;
+  currentUser?: SafeUser | null
 }
 
-const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
+const Navbar = ({ currentUser }: NavbarProps) => {
   return (
-    <div className="fixed w-full bg-white z-10 shadow-sm">
+    <div className="fixed z-10 w-full bg-white shadow-sm">
       <div
         className="
-          py-4 
-          border-b-[1px]
+          border-b-[1px] 
+          py-4
         "
       >
         <Container>
@@ -38,7 +38,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
       </div>
       <Categories />
     </div>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
