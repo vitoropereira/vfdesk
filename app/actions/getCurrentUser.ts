@@ -1,18 +1,18 @@
-import { getServerSession } from "next-auth/next";
+import { getServerSession } from 'next-auth/next'
 
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import prisma from "@/app/libs/prismadb";
+import { authOptions } from '@/pages/api/auth/[...nextauth]'
+import prisma from '@/app/libs/prismadb'
 
 export async function getSession() {
-  return await getServerSession(authOptions);
+  return await getServerSession(authOptions)
 }
 
 export default async function getCurrentUser() {
   try {
-    const session = await getSession();
+    const session = await getSession()
 
     if (!session?.user?.email) {
-      return null;
+      return null
     }
 
     const currentUser = await prisma.user.findUnique({
@@ -22,10 +22,10 @@ export default async function getCurrentUser() {
       include: {
         favorite: true,
       },
-    });
+    })
 
     if (!currentUser) {
-      return null;
+      return null
     }
 
     return {
@@ -34,8 +34,8 @@ export default async function getCurrentUser() {
       updatedAt: currentUser.updatedAt.toISOString(),
       emailVerified: currentUser.emailVerified?.toISOString() || null,
       favoriteIds: currentUser.favorite || null,
-    };
+    }
   } catch (error: any) {
-    return null;
+    return null
   }
 }

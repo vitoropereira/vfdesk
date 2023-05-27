@@ -1,31 +1,31 @@
-"use client";
+'use client'
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from 'next/navigation'
 
-import CategoryBox from "../CategoryBox";
-import Container from "../Container";
-import { categories } from "@/app/utils/categories";
+import CategoryBox from '../CategoryBox'
+import Container from '../Container'
+import { categories } from '@/app/utils/categories'
 
 const Categories = () => {
-  const params = useSearchParams();
-  const category = params?.get("category");
-  const pathname = usePathname();
-  const isMainPage = pathname === "/";
+  const params = useSearchParams()
+  const category = params?.get('category')
+  const pathname = usePathname()
+  const isMainPage = pathname === '/'
 
   if (!isMainPage) {
-    return null;
+    return null
   }
 
   return (
     <Container>
       <div
         className="
-          pt-4
-          flex 
+          flex
           flex-row 
           items-center 
-          justify-between
+          justify-between 
           overflow-x-auto
+          pt-4
         "
       >
         {categories.map((item) => (
@@ -38,7 +38,7 @@ const Categories = () => {
         ))}
       </div>
     </Container>
-  );
-};
+  )
+}
 
-export default Categories;
+export default Categories

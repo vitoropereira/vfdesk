@@ -1,21 +1,21 @@
-"use client";
+'use client'
 
-import { Range } from "react-date-range";
+import { Range } from 'react-date-range'
 
-import Button from "../Button";
-import Calendar from "../inputs/Calendar";
+import Button from '../Button'
+import Calendar from '../inputs/Calendar'
 
 interface ListingReservationProps {
-  price: number;
-  dateRange: Range;
-  totalPrice: number;
-  onChangeDate: (value: Range) => void;
-  onSubmit: () => void;
-  disabled?: boolean;
-  disabledDates: Date[];
+  price: number
+  dateRange: Range
+  totalPrice: number
+  onChangeDate: (value: Range) => void
+  onSubmit: () => void
+  disabled?: boolean
+  disabledDates: Date[]
 }
 
-const ListingReservation: React.FC<ListingReservationProps> = ({
+const ListingReservation = ({
   price,
   dateRange,
   totalPrice,
@@ -23,15 +23,15 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
   onSubmit,
   disabled,
   disabledDates,
-}) => {
+}: ListingReservationProps) => {
   return (
     <div
       className="
-      bg-white 
+      overflow-hidden 
         rounded-xl 
         border-[1px]
       border-neutral-200 
-        overflow-hidden
+        bg-white
       "
     >
       <div
@@ -50,7 +50,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
       <Calendar
         value={dateRange}
         disabledDates={disabledDates}
-        onChange={(value) => onChangeDate(value.selection)}
+        onChange={(value: Range) => onChangeDate(value)}
       />
       <hr />
       <div className="p-4">
@@ -59,20 +59,20 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
       <hr />
       <div
         className="
-          p-4 
           flex 
           flex-row 
           items-center 
-          justify-between
-          font-semibold
+          justify-between 
+          p-4
           text-lg
+          font-semibold
         "
       >
         <div>Total</div>
         <div>$ {totalPrice}</div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ListingReservation;
+export default ListingReservation

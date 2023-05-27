@@ -1,78 +1,78 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server'
 
-import getCurrentUser from "@/app/actions/getCurrentUser";
-import prisma from "@/app/libs/prismadb";
+import getCurrentUser from '@/app/actions/getCurrentUser'
+import prisma from '@/app/libs/prismadb'
 
 interface IParams {
-  listingId?: string;
+  listingId?: string
 }
 
 export async function POST(request: Request, { params }: { params: IParams }) {
-  const currentUser = await getCurrentUser();
+  const currentUser = await getCurrentUser()
 
   if (!currentUser) {
-    return NextResponse.error();
+    return NextResponse.error()
   }
 
-  const { listingId } = params;
+  const { listingId } = params
 
-  if (!listingId || typeof listingId !== "string") {
-    throw new Error("Invalid ID");
+  if (!listingId || typeof listingId !== 'string') {
+    throw new Error('Invalid ID')
   }
 
   const favoriteIds = await prisma.favorite.findMany({
     where: {
       userId: currentUser.id,
-      listingId: listingId,
+      listingId,
     },
-  });
+  })
 
   if (favoriteIds.length > 0) {
-    return NextResponse.json(favoriteIds);
+    return NextResponse.json(favoriteIds)
   }
 
   const createFavorite = await prisma.favorite.create({
     data: {
       userId: currentUser.id,
-      listingId: listingId,
+      listingId,
     },
-  });
+  })
 
-  return NextResponse.json(createFavorite);
+  return NextResponse.json(createFavorite)
 }
 
 export async function DELETE(
   request: Request,
-  { params }: { params: IParams }
+  { params }: { params: IParams },
 ) {
-  const currentUser = await getCurrentUser();
+  const currentUser = await getCurrentUser()
 
   if (!currentUser) {
-    return NextResponse.error();
+    return NextResponse.error()
   }
 
-  const { listingId } = params;
+  const { listingId } = params
 
-  if (!listingId || typeof listingId !== "string") {
-    throw new Error("Invalid ID");
+  if (!listingId || typeof listingId !== 'string') {
+    throw new Error('Invalid ID')
   }
 
   const favoriteIds = await prisma.favorite.findMany({
     where: {
       userId: currentUser.id,
-      listingId: listingId,
+      listingId,
     },
-  });
+  })
 
-  if (favoriteIds.length == 0) {
-    return NextResponse.json(favoriteIds);
+  if (favoriteIds.length === 0) {
+    return NextResponse.json(favoriteIds)
   }
 
   const deleteFavoriteIds = await prisma.favorite.delete({
     where: {
       id: favoriteIds[0].id,
     },
-  });
+  })
 
-  return NextResponse.json(deleteFavoriteIds);
+  return NextResponse.json(deleteFavoriteIds)
 }
