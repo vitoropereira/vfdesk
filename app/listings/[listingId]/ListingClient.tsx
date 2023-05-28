@@ -149,11 +149,7 @@ const ListingClient = ({
               <ListingReservation
                 price={listing.price}
                 totalPrice={totalPrice}
-                onChangeDate={(value) => {
-                  console.log('value onChangeDate')
-                  console.log(value)
-                  setDateRange(value)
-                }}
+                onChangeDate={(value) => setDateRange(value)}
                 dateRange={dateRange}
                 onSubmit={onCreateReservation}
                 disabled={isLoading}
