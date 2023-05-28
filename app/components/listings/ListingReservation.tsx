@@ -50,7 +50,7 @@ const ListingReservation = ({
       <Calendar
         value={dateRange}
         disabledDates={disabledDates}
-        onChange={(value: Range) => onChangeDate(value)}
+        onChange={(value) => onChangeDate(value.selection)}
       />
       <hr />
       <div className="p-4">
