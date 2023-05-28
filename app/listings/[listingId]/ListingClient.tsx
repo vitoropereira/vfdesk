@@ -16,12 +16,6 @@ import ListingInfo from '@/app/components/listings/ListingInfo'
 import { categories } from '@/app/utils/categories'
 import ListingReservation from '@/app/components/listings/ListingReservation'
 
-const initialDateRange = {
-  startDate: new Date(),
-  endDate: new Date(),
-  key: 'selection',
-}
-
 interface ListingClientProps {
   reservations?: SafeReservation[]
   listing: SafeListing & {
@@ -54,7 +48,11 @@ const ListingClient = ({
 
   const [isLoading, setIsLoading] = useState(false)
   const [totalPrice, setTotalPrice] = useState(listing.price)
-  const [dateRange, setDateRange] = useState<Range>(initialDateRange)
+  const [dateRange, setDateRange] = useState<Range>({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection',
+  })
 
   const onCreateReservation = useCallback(() => {
     if (!currentUser) {
@@ -72,7 +70,11 @@ const ListingClient = ({
       })
       .then(() => {
         toast.success('Listing reserved!')
-        setDateRange(initialDateRange)
+        setDateRange({
+          startDate: new Date(),
+          endDate: new Date(),
+          key: 'selection',
+        })
         router.push('/trips')
       })
       .catch(() => {
