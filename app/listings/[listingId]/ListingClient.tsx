@@ -40,7 +40,6 @@ const ListingClient = ({
 
   const disabledDates = useMemo(() => {
     let dates: Date[] = []
-    console.log('useMemo')
     reservations.forEach((reservation) => {
       const range = eachDayOfInterval({
         start: new Date(reservation.startDate),
@@ -61,7 +60,7 @@ const ListingClient = ({
     if (!currentUser) {
       return loginModal.onOpen()
     }
-    console.log('entrei aqui!')
+
     setIsLoading(true)
 
     axios
@@ -72,7 +71,6 @@ const ListingClient = ({
         listingId: listing?.id,
       })
       .then(() => {
-        console.log('entrei aqui! then')
         toast.success('Listing reserved!')
         setDateRange(initialDateRange)
         router.push('/trips')
@@ -91,7 +89,7 @@ const ListingClient = ({
         dateRange.endDate,
         dateRange.startDate,
       )
-      console.log('useEffect')
+
       if (dayCount && listing.price) {
         setTotalPrice(dayCount * listing.price)
       } else {
